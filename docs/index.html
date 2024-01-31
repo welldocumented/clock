@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>タイマー</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  #timer {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+<div id="timer">90</div>
+<script>
+  let timer;
+  let timeLeft = 90;
+  let lastTap = 0;
+
+  function startTimer() {
+    clearInterval(timer);
+    timer = setInterval(() => {
+      timeLeft--;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        timeLeft = 150;
+        document.getElementById("timer").textContent = timeLeft;
+      } else {
+        document.getElementById("timer").textContent = timeLeft;
+      }
+    }, 1000);
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    timeLeft = 150;
+    document.getElementById("timer").textContent = timeLeft;
+    startTimer();
+  }
+
+  function handleTap() {
+    const now = new Date().getTime();
+    const timeSinceLastTap = now - lastTap;
+    lastTap = now;
+    if (timeSinceLastTap < 300) {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      } else {
+        resetTimer();
+      }
+    } else {
+      startTimer();
+    }
+  }
+
+  document.getElementById("timer").addEventListener("click", handleTap);
+</script>
+</body>
+</html>
